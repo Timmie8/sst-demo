@@ -11,23 +11,31 @@
     font-family: Arial, sans-serif;
     background: #f4f4f4;
   }
+
   .demo-container {
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
   }
+
   .demo-container img {
     width: 100%;
+    height: auto;
     display: block;
   }
+
+  /* Overlay vakjes */
   .overlay {
     position: absolute;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.9);
     border: 3px solid #ff0000;
     border-radius: 8px;
     padding: 10px;
     max-width: 300px;
+    /* Schaal mee met container */
+    transform-origin: top left;
   }
+
   .controls {
     position: fixed;
     bottom: 20px;
@@ -35,6 +43,7 @@
     transform: translateX(-50%);
     z-index: 10;
   }
+
   .controls button {
     padding: 10px 20px;
     margin: 0 5px;
@@ -49,10 +58,13 @@
 <body>
 
 <div class="demo-container">
-  <img id="demoImage" src="https://via.placeholder.com/1200x700.png?text=Home+Page" alt="SST Demo">
-  
+  <!-- Hier komt je screenshot -->
+  <img id="demoImage" src="images/home.png" alt="SST Demo">
+
+  <!-- Overlay -->
   <div id="overlay" class="overlay"></div>
-  
+
+  <!-- Navigatie -->
   <div class="controls">
     <button onclick="prevStep()">Previous</button>
     <button onclick="nextStep()">Next</button>
@@ -60,75 +72,97 @@
 </div>
 
 <script>
-let currentStep = 0;
-
-// Vul hier de juiste screenshots in als je die hebt
+// Hier definieer je je stappen en screenshots
 const steps = [
   {
-    img: "https://via.placeholder.com/1200x700.png?text=Home+Page",
+    img: "images/home.png",
     text: "Welcome to SST! Change your language here.",
-    style: { top: "20px", left: "20px" }
+    topPct: 3,
+    leftPct: 2
   },
   {
-    img: "https://via.placeholder.com/1200x700.png?text=Membership+Page",
+    img: "images/membership.png",
     text: "Click 'Start Your Membership' to pay via PayPal.",
-    style: { top: "100px", left: "20px" }
+    topPct: 12,
+    leftPct: 2
   },
   {
-    img: "https://via.placeholder.com/1200x700.png?text=Members+Area",
+    img: "images/members.png",
     text: "Already a member? Go to the Members area here.",
-    style: { top: "80px", left: "20px" }
+    topPct: 10,
+    leftPct: 2
   },
   {
-    img: "https://via.placeholder.com/1200x700.png?text=Videos+Page",
+    img: "images/videos.png",
     text: "Read pages and watch videos here.",
-    style: { top: "80px", left: "20px" }
+    topPct: 10,
+    leftPct: 2
   },
   {
-    img: "https://via.placeholder.com/1200x700.png?text=Live+Notifications",
+    img: "images/notifications.png",
     text: "Enable live notifications to stay updated.",
-    style: { top: "80px", left: "20px" }
+    topPct: 10,
+    leftPct: 2
   },
   {
-    img: "https://via.placeholder.com/1200x700.png?text=Morning+Call",
+    img: "images/morningcall.png",
     text: "Check the Morning Call page for info.",
-    style: { top: "80px", left: "20px" }
+    topPct: 10,
+    leftPct: 2
   },
   {
-    img: "https://via.placeholder.com/1200x700.png?text=Buy+Sell+Tips",
+    img: "images/buysell.png",
     text: "Daily Buy/Sell tips appear here.",
-    style: { top: "80px", left: "20px" }
+    topPct: 10,
+    leftPct: 2
   },
   {
-    img: "https://via.placeholder.com/1200x700.png?text=TA+Tools+Apps",
+    img: "images/tatools.png",
     text: "Find all free TA Tools / Apps here.",
-    style: { top: "80px", left: "20px" }
+    topPct: 10,
+    leftPct: 2
   }
 ];
 
+let currentStep = 0;
+
 const demoImage = document.getElementById("demoImage");
 const overlay = document.getElementById("overlay");
+const container = document.querySelector(".demo-container");
 
-function showStep(step) {
-  const s = steps[step];
-  demoImage.src = s.img;
-  overlay.textContent = s.text;
-  overlay.style.top = s.style.top;
-  overlay.style.left = s.style.left;
+// Functie om overlay te positioneren in % van container
+function positionOverlay(step) {
+  overlay.textContent = step.text;
+  overlay.style.top = (container.clientHeight * step.topPct / 100) + "px";
+  overlay.style.left = (container.clientWidth * step.leftPct / 100) + "px";
 }
 
+// Toon stap
+function showStep(stepIndex) {
+  const step = steps[stepIndex];
+  demoImage.src = step.img;
+  // Even wachten tot afbeelding geladen is voor juiste hoogte
+  demoImage.onload = () => {
+    positionOverlay(step);
+  }
+}
+
+// Navigatie
 function nextStep() {
-  if(currentStep < steps.length - 1) currentStep++;
+  if (currentStep < steps.length - 1) currentStep++;
   showStep(currentStep);
 }
 
 function prevStep() {
-  if(currentStep > 0) currentStep--;
+  if (currentStep > 0) currentStep--;
   showStep(currentStep);
 }
 
 // Start demo
 showStep(currentStep);
+
+// Responsive: herpositioneer overlay bij venster resize
+window.addEventListener("resize", () => showStep(currentStep));
 </script>
 
 </body>
