@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SST Interactive Demo</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+  }
+  .demo-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .demo-container img {
+    width: 100%;
+    display: block;
+  }
+  .overlay {
+    position: absolute;
+    background: rgba(255,255,255,0.9);
+    border: 3px solid #ff0000;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 300px;
+  }
+  .controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+  .controls button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    background: #1e3d59;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+  <img id="demoImage" src="https://via.placeholder.com/1200x700.png?text=Home+Page" alt="SST Demo">
+  
+  <div id="overlay" class="overlay"></div>
+  
+  <div class="controls">
+    <button onclick="prevStep()">Previous</button>
+    <button onclick="nextStep()">Next</button>
+  </div>
+</div>
+
+<script>
+let currentStep = 0;
+
+// Vul hier de juiste screenshots in als je die hebt
+const steps = [
+  {
+    img: "https://via.placeholder.com/1200x700.png?text=Home+Page",
+    text: "Welcome to SST! Change your language here.",
+    style: { top: "20px", left: "20px" }
+  },
+  {
+    img: "https://via.placeholder.com/1200x700.png?text=Membership+Page",
+    text: "Click 'Start Your Membership' to pay via PayPal.",
+    style: { top: "100px", left: "20px" }
+  },
+  {
+    img: "https://via.placeholder.com/1200x700.png?text=Members+Area",
+    text: "Already a member? Go to the Members area here.",
+    style: { top: "80px", left: "20px" }
+  },
+  {
+    img: "https://via.placeholder.com/1200x700.png?text=Videos+Page",
+    text: "Read pages and watch videos here.",
+    style: { top: "80px", left: "20px" }
+  },
+  {
+    img: "https://via.placeholder.com/1200x700.png?text=Live+Notifications",
+    text: "Enable live notifications to stay updated.",
+    style: { top: "80px", left: "20px" }
+  },
+  {
+    img: "https://via.placeholder.com/1200x700.png?text=Morning+Call",
+    text: "Check the Morning Call page for info.",
+    style: { top: "80px", left: "20px" }
+  },
+  {
+    img: "https://via.placeholder.com/1200x700.png?text=Buy+Sell+Tips",
+    text: "Daily Buy/Sell tips appear here.",
+    style: { top: "80px", left: "20px" }
+  },
+  {
+    img: "https://via.placeholder.com/1200x700.png?text=TA+Tools+Apps",
+    text: "Find all free TA Tools / Apps here.",
+    style: { top: "80px", left: "20px" }
+  }
+];
+
+const demoImage = document.getElementById("demoImage");
+const overlay = document.getElementById("overlay");
+
+function showStep(step) {
+  const s = steps[step];
+  demoImage.src = s.img;
+  overlay.textContent = s.text;
+  overlay.style.top = s.style.top;
+  overlay.style.left = s.style.left;
+}
+
+function nextStep() {
+  if(currentStep < steps.length - 1) currentStep++;
+  showStep(currentStep);
+}
+
+function prevStep() {
+  if(currentStep > 0) currentStep--;
+  showStep(currentStep);
+}
+
+// Start demo
+showStep(currentStep);
+</script>
+
+</body>
+</html>
